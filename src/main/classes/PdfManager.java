@@ -1,23 +1,20 @@
 package main.classes;
 
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.Normalizer;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Pattern;
 
-import com.sun.org.apache.xml.internal.security.transforms.params.InclusiveNamespaces;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import main.comisiones.Horarios;
+import main.comisiones.Materia;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.util.PDFTextStripper;
-import org.apache.pdfbox.util.PDFTextStripperByArea;
 
 /**
  * Created by kaotiks on 10/08/16.
@@ -40,27 +37,19 @@ public class PdfManager {
     private PDDocument pdDoc ;
     private COSDocument cosDoc ;
     private String Text ;
-    private String filePath;
     private File file;
 
     // Constructor
     public PdfManager() {}
 
-    // Métodos
-
-    // Setters
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
 
     // Esto lee el PDF en un solo String
-    private String toText(String path) throws IOException
+    private String toText() throws IOException
     {
         this.pdfStripper = null;
         this.pdDoc = null;
         this.cosDoc = null;
 
-        file = new File(path);
         parser = new PDFParser(new FileInputStream(file));
 
         parser.parse();
@@ -97,10 +86,15 @@ public class PdfManager {
 
     private Map<String,String> getAnalizedData(String sede, String fecha){
         // todo: de aca llamo a FileHandler()
+        URL url = this.getClass().getResource("/main/resources/"+sede+fecha+".pdf");
+        try {
+            file = new File(url.toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
-        this.setFilePath("C:\\Users\\kaotiks\\workspace\\sata\\CarteleraDiaria\\src\\main\\resources\\" + sede + fecha + ".pdf");
         try{
-            String file = stripDiacritics(this.toText(this.filePath).toLowerCase());
+            String file = stripDiacritics(this.toText().toLowerCase());
             return this.cleanSource(file);
         } catch (Exception e){
             e.printStackTrace();
@@ -208,12 +202,13 @@ public class PdfManager {
     }
 
     // Parsea la info del PDF de Comisiones y Cursadas
-    public Map<String,String> analizePdfComisiones(String s){
+    public ArrayList<Materia> analizePdfComisiones(File s){
+        this.file = s;
         // Cada materia contiene Nombre y Codigo + Comisiones y horarios
-        Map<String,String> materias = new HashMap<>();
+        ArrayList<Materia> materias = new ArrayList<Materia>();
 
         try {
-            String[] data = stripDiacritics(this.toText(s).toLowerCase()).split("\r\n");
+            String[] data = stripDiacritics(this.toText().toLowerCase()).split("\r\n");
 
             for(int i=0 ; i < data.length ; i++){
                 // Si no es ni nombre de carrera ni comiciones, continue
@@ -223,23 +218,58 @@ public class PdfManager {
                 // Si los ultimos 3 digitos son numeros, es nombre de Materia + Codigo
                 if(lastDigits(data[i])){
                     String name = data[i];
-                    String com = "";
-
+                    Materia materia = materiaExist(name,materias);
+                    String comision ="";
+                    String horario = "";
+                    String dia = "";
+                    String modalidad ="";
+                    String profesores ="";
+                    String tipocursada ="";
                     // Itera hasta que llega al prox. nombre de carrera
                     try {
                         while(esCursada(data[i+1])){
                             i += 1;
-                            com = com + data[i] +"\r";
+                            comision = data[i].substring(0,data[i].indexOf(')')+1);
+                            tipocursada = data[i].substring(data[i].indexOf(')')+1,data[i].indexOf('/')-3);
+                            horario = data[i].substring(data[i].indexOf(':')-2,data[i].lastIndexOf("00")+2);
+                            int longitudDia = 0;
+                            int longitudModalidad = 0;
+                            if(data[i].contains("lunes")){
+                                longitudDia = 5;
+                            }
+                            if(data[i].contains("martes")){
+                                longitudDia = 6;
+                            }
+                            if(data[i].contains("miercoles")){
+                                longitudDia = 9;
+                            }
+                            if(data[i].contains("jueves")){
+                                longitudDia = 6;
+                            }
+                            if(data[i].contains("viernes")){
+                                longitudDia = 7;
+                            }
+                            if(data[i].contains("sabado")){
+                                longitudDia = 6;
+                            }
+                            if(data[i].contains("semanal")){
+                                longitudModalidad = 7;
+                            }
+                            if(data[i].contains("quincenal")){
+                                longitudModalidad = 9;
+                            }
+                            if(data[i].contains("mensual")){
+                                longitudModalidad = 7;
+                            }
+                            dia = data[i].substring(data[i].lastIndexOf("00")+3,data[i].lastIndexOf("00")+2+longitudDia+1);
+                            modalidad = data[i].substring(data[i].lastIndexOf("00")+4+longitudDia,data[i].lastIndexOf("00")+4+longitudDia+longitudModalidad);
+                            profesores = data[i].substring(data[i].lastIndexOf("00")+4+longitudDia+longitudModalidad,data[i].length());
                         }
+                        materia.getHorariosArrayList().add(new Horarios(comision,horario,dia,modalidad,profesores,tipocursada));
                     } catch (Exception e){
                         continue;
                     }
-                    // ya existe la clave? concatena el valor
-                    if(keyExists(materias,name)){
-                        materias.put(name,materias.get(name)+com);
-                    } else {
-                        materias.put(name,com);
-                    }
+                    materias.add(materia);
                 }
             }
         } catch (Exception e){
@@ -287,13 +317,13 @@ public class PdfManager {
         return str;
     }
 
-    private Boolean keyExists(Map<String,String> map,String s){
-        String value = map.get(s);
-        if (value != null) {
-            return true;
-        } else {
-            return false;
+    private Materia materiaExist(String name,ArrayList<Materia> materias){
+        for (Materia m:materias){
+            if(m.getName().equals(name)){
+                return m;
+            }
         }
+        return  new Materia(name);
     }
 
     private String cleanComiciones(String s){
