@@ -1,4 +1,4 @@
-package main.cartelera;
+package cartelera;
 
 /**
  * Created by Klincaja on 21/10/16.

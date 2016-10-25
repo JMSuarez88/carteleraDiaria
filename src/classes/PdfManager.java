@@ -1,4 +1,4 @@
-package main.classes;
+package classes;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,8 +9,8 @@ import java.text.Normalizer;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import main.comisiones.Horarios;
-import main.comisiones.Materia;
+import comisiones.Horarios;
+import comisiones.Materia;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;

@@ -1,4 +1,4 @@
-package main.comisiones;
+package comisiones;
 
 /**
  * Created by Klincaja on 21/10/16.

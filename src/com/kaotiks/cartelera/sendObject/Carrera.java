@@ -1,4 +1,4 @@
-package sendObject;
+package com.kaotiks.cartelera.sendObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,4 +22,10 @@ public class Carrera implements Serializable {
         return materiaArrayList;
     }
 
+
+
+    @Override
+    public String toString(){
+        return "Nombre:"+nombre;
+    }
 }

@@ -1,10 +1,10 @@
-package main.classes;
+package cartelera;
+
+import classes.PdfManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kaotiks on 08/08/16.
@@ -15,7 +15,7 @@ public class Cartelera {
     // Variables
     private String nombreSede;
     private String ciudad;
-    private Map<Integer,Map<String,String>> aulas = new HashMap<>();
+    private ArrayList<Aula> aulaArrayList;
     private PdfManager pdfManager = new PdfManager();
     private Date fechaActual;
     // todo: fechaAnterior = ultima fecha usada (db)
@@ -23,6 +23,7 @@ public class Cartelera {
 
     // Constructor
     public Cartelera(String name) {
+        setAulaArrayList(new ArrayList<Aula>());
         this.nombreSede = name;
         this.setNombreCiudad();
         this.setAulasFromPdf();
@@ -32,12 +33,10 @@ public class Cartelera {
     // Getters
     public String getNombreSede() {return nombreSede;}
     public String getCiudad() {return ciudad;}
-    public Map<Integer, Map<String, String>> getAulas() {return aulas;}
 
     // Setters
     public void setNombreSede(String nombreSede) {this.nombreSede = nombreSede;}
     public void setCiudad(String ciudad) {this.ciudad = ciudad;}
-    public void setAulas(Map<Integer, Map<String, String>> aulas) {this.aulas = aulas;}
 
     // Métodos
     // Asigna la ciudad segun el nombre de la sede
@@ -51,8 +50,35 @@ public class Cartelera {
     // Recopila los datos de las carteleras en PDF y asigna cada aula con sus cursadas
     public void setAulasFromPdf(){
         // todo: esto no esta guardando ningun valor, falta agregar el resto
-        this.pdfManager.gatherData(this.nombreSede,"27082016");
-        //Map<Integer, Map<String, String>> aux = this.pdfManager.gatherData(this.nombreSede);
+
+        for (Map.Entry<String, String> entry : this.pdfManager.gatherData(this.nombreSede,"29082016").entrySet())
+        {
+            if(entry.getKey().length()>entry.getValue().length()){
+                continue;
+            }else{
+                Aula aula = new Aula(entry.getKey().substring(0,3));
+                String aux = entry.getValue();
+                String materia = "";
+                String horario = "";
+                while(aux.length()!=0) {
+                    try {
+                        materia = aux.substring(0, aux.indexOf(':') - 3);
+                        if (aux.indexOf("0 ") != -1) {
+                            horario = aux.substring(aux.indexOf(':') - 3, aux.indexOf(" a ") + 8);
+                            aux = aux.substring(aux.indexOf(" a ") + 8, aux.length());
+                        } else {
+                            horario = aux.substring(aux.indexOf(':') - 3, aux.lastIndexOf('0') + 1);
+                        }
+                        aula.getClaseAulas().add(new ClaseAula(materia, horario));
+                    } catch (Exception e) {
+                        break;
+                    }
+                }
+                aulaArrayList.add(aula);
+
+            }
+        }
+        //Map<Integer, Map<String, String>> aux = this.pdfManager.gatherData(this.nombreSede,"27082016");
         //this.setAulas(aux);
     }
 
@@ -85,5 +111,13 @@ public class Cartelera {
         }
 
         return false;
+    }
+
+    public ArrayList<Aula> getAulaArrayList() {
+        return aulaArrayList;
+    }
+
+    public void setAulaArrayList(ArrayList<Aula> aulaArrayList) {
+        this.aulaArrayList = aulaArrayList;
     }
 }

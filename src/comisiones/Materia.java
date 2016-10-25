@@ -1,4 +1,4 @@
-package main.comisiones;
+package comisiones;
 
 import java.util.ArrayList;
 

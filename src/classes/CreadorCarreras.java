@@ -1,7 +1,7 @@
-package main.classes;
+package classes;
 
-import sendObject.Carrera;
-import sendObject.MateriaCarrera;
+import com.kaotiks.cartelera.sendObject.*;
+
 
 /**
  * Created by Klincaja on 22/10/16.

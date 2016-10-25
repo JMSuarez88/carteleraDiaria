@@ -1,4 +1,4 @@
-package main.cartelera;
+package cartelera;
 
 import java.util.ArrayList;
 

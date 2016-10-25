@@ -1,7 +1,8 @@
-package main.server;
+package server;
 
-import main.classes.Client;
-import sendObject.PackageData;
+import classes.Client;
+import classes.SingletonClass;
+import com.kaotiks.cartelera.sendObject.PackageData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,8 +30,14 @@ public class ClientesCartelera extends Client implements Runnable {
         PackageData packageData = (PackageData)o;
         switch (packageData.getIDMESSAGE()){
             case 1:
+                this.sendMessage(new PackageData(1, SingletonClass.getInstance().getCarreraArrayList(),SingletonClass.getInstance().getVersionData()));
                 break;
             case 2:
+                if(packageData.getVersionDatos()==SingletonClass.getInstance().getVersionData()){
+                    this.sendMessage(new PackageData(2));
+                }else{
+                    this.sendMessage(new PackageData(3,SingletonClass.getInstance().getCarreraArrayList(),SingletonClass.getInstance().getVersionData()));
+                }
                 break;
             case 3:
                 break;

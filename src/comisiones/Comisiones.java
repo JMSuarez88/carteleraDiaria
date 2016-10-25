@@ -1,6 +1,6 @@
-package main.comisiones;
+package comisiones;
 
-import main.classes.PdfManager;
+import classes.PdfManager;
 
 import java.io.File;
 import java.net.URISyntaxException;

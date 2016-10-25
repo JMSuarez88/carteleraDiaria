@@ -1,4 +1,4 @@
-package sendObject;
+package com.kaotiks.cartelera.sendObject;
 
 import java.io.Serializable;
 

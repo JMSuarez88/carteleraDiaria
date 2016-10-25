@@ -1,7 +1,9 @@
-package main.classes;
+package classes;
 
-import main.databaseConnection.ConnectionDB;
-import sendObject.User;
+import com.kaotiks.cartelera.sendObject.User;
+import databaseConnection.ConnectionDB;
+
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

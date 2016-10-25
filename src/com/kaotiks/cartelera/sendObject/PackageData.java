@@ -1,4 +1,4 @@
-package sendObject;
+package com.kaotiks.cartelera.sendObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ public class PackageData implements Serializable {
 
     //Variables
     private final int IDMESSAGE;
+    private double versionDatos;
     private User user; // Datos del usuario
     private ArrayList<Carrera> carreraArrayList; // Todas las carreras con sus respectivas materias
     private ArrayList<MateriaCarrera> cursadas; // Materias a la cual el usuario esta cursando
@@ -22,6 +23,15 @@ public class PackageData implements Serializable {
     }
 
 
+    public PackageData(int IDMESSAGE,ArrayList<MateriaCarrera> cursadas ){
+        this.IDMESSAGE = IDMESSAGE;
+        this.cursadas = cursadas;
+    }
+    public PackageData(int IDMESSAGE, ArrayList<Carrera> carreraArrayListrrera, double versionDatos ){
+        this.IDMESSAGE = IDMESSAGE;
+        this.carreraArrayList = carreraArrayListrrera;
+        this.versionDatos = versionDatos;
+    }
 
 
     //Getters & Setters
@@ -59,5 +69,13 @@ public class PackageData implements Serializable {
 
     public void setCursadasArrayList(ArrayList<Cursadas> cursadasArrayList) {
         this.cursadasArrayList = cursadasArrayList;
+    }
+
+    public double getVersionDatos() {
+        return versionDatos;
+    }
+
+    public void setVersionDatos(int versionDatos) {
+        this.versionDatos = versionDatos;
     }
 }
