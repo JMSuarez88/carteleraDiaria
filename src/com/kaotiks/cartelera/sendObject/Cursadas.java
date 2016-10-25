@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by Klincaja on 23/10/16.
  */
 public class Cursadas implements Serializable {
+    private static final long serialVersionUID = -6374678792440967465L;
 
     private String aula;
     private String nombre;

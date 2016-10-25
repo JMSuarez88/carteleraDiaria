@@ -6,6 +6,8 @@ import cartelera.*;
 import server.ServerCartelera;
 
 
+
+
 /**
  * Created by kaotiks on 08/08/16.
  */
@@ -23,6 +25,7 @@ public class CarteleraDiaria {
         SingletonClass.getInstance().getCarreraArrayList().add(CreadorCarreras.CrearLICINFORMATICO());
 
         ServerCartelera sr = new ServerCartelera(4040);
+
     }
 
     public void updateResources(){

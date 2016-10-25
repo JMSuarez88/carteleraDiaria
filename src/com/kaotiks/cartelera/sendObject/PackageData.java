@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Clase que maneja todos los datos que se envian la accion se evalua atravez de el IDMESSAGE
  */
 public class PackageData implements Serializable {
-
+    private static final long serialVersionUID = -6374678792440967465L;
     //Variables
     private final int IDMESSAGE;
     private double versionDatos;
@@ -31,6 +31,12 @@ public class PackageData implements Serializable {
         this.IDMESSAGE = IDMESSAGE;
         this.carreraArrayList = carreraArrayListrrera;
         this.versionDatos = versionDatos;
+    }
+
+    public PackageData(int idmessage, double versionDatos, User user) {
+        this.IDMESSAGE = idmessage;
+        this.versionDatos = versionDatos;
+        this.user = user;
     }
 
 

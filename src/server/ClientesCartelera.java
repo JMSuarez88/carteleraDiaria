@@ -29,6 +29,10 @@ public class ClientesCartelera extends Client implements Runnable {
     public void commandosListener(Object o) {
         PackageData packageData = (PackageData)o;
         switch (packageData.getIDMESSAGE()){
+            case 0:
+                this.sendMessage(new PackageData(0));
+
+                break;
             case 1:
                 this.sendMessage(new PackageData(1, SingletonClass.getInstance().getCarreraArrayList(),SingletonClass.getInstance().getVersionData()));
                 break;
@@ -62,8 +66,10 @@ public class ClientesCartelera extends Client implements Runnable {
             try {
                 commandosListener(this.getObjectInputStream().readObject());
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
                 this.setPackageDataError(this.getPackageDataError()+1);
+            }
+            if(this.getPackageDataError()==10){
+                break;
             }
         }
     }

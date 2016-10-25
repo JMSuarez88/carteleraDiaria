@@ -8,14 +8,18 @@ import java.util.ArrayList;
  */
 public class Carrera implements Serializable {
 
+    private static final long serialVersionUID = -6374678792440967465L;
+
     // Variables
+    private String sede;
     private String nombre;
     private ArrayList<MateriaCarrera> materiaArrayList;
 
 
-    public Carrera(String nombre) {
+    public Carrera(String nombre,String sede) {
         materiaArrayList = new ArrayList<MateriaCarrera>();
         this.nombre = nombre;
+        this.sede = sede;
     }
 
     public ArrayList<MateriaCarrera> getMateriaArrayList(){
@@ -26,6 +30,13 @@ public class Carrera implements Serializable {
 
     @Override
     public String toString(){
-        return "Nombre:"+nombre;
+        return "Nombre:"+nombre+"\n"+sede;
+    }
+
+    public String getSede() {
+        return sede;
+    }
+    public String getName(){
+        return nombre;
     }
 }

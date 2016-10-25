@@ -9,7 +9,7 @@ import com.kaotiks.cartelera.sendObject.*;
 public class CreadorCarreras {
 
     public static Carrera CrearINGENIERIAENINFORMATICA(){
-        Carrera carreara = new Carrera("Ingenieria en informatica");
+        Carrera carreara = new Carrera("Ingenieria en informatica","JUNIN");
         carreara.getMateriaArrayList().add(new MateriaCarrera("Arquitectura I","00357"));
         carreara.getMateriaArrayList().add(new MateriaCarrera("Sistemas y Organizaciones","00358"));
         carreara.getMateriaArrayList().add(new MateriaCarrera("Introduccion al algebra","00666"));
@@ -60,7 +60,7 @@ public class CreadorCarreras {
     }
 
     public static Carrera CrearANALISTAENSISTEMAS(){
-        Carrera carreara = new Carrera("Analista en Sistemas");
+        Carrera carreara = new Carrera("Analista en Sistemas","JUNIN");
         carreara.getMateriaArrayList().add(new MateriaCarrera("Arquitectura I","00357"));
         carreara.getMateriaArrayList().add(new MateriaCarrera("Sistemas y Organizaciones","00358"));
         carreara.getMateriaArrayList().add(new MateriaCarrera("Introduccion al algebra","00666"));
@@ -93,7 +93,7 @@ public class CreadorCarreras {
     }
 
     public static Carrera CrearLICINFORMATICO(){
-        Carrera carreara = new Carrera("Licenciado en Sistemas");
+        Carrera carreara = new Carrera("Licenciado en Sistemas","JUNIN");
         carreara.getMateriaArrayList().add(new MateriaCarrera("Arquitectura I","00357"));
         carreara.getMateriaArrayList().add(new MateriaCarrera("Sistemas y Organizaciones","00358"));
         carreara.getMateriaArrayList().add(new MateriaCarrera("Introduccion al algebra","00666"));
