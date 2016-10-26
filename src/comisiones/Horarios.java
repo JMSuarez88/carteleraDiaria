@@ -12,6 +12,8 @@ public class Horarios {
     private String tipocursada ;
 
 
+
+
     public Horarios(String comision, String horario, String dia, String modalidad, String profesores, String tipocursada) {
         this.comision = comision;
         this.horario = horario;

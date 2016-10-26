@@ -11,10 +11,42 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/mysql-connector-java-5.0.8-bin.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/lib/json-lib-2.4-jdk15.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <ANNOTATIONS>
+          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+        </ANNOTATIONS>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+        </JAVADOC>
+        <NATIVE>
+          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+        </NATIVE>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" />
+        </SOURCES>
+        <jarDirectory url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" recursive="false" />
+        <jarDirectory url="jar://$MODULE_DIR$/src/lib/jsoup-1.10.1.jar!/" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
   </component>

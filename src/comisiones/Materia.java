@@ -10,10 +10,14 @@ public class Materia {
     // Clase contiene un nombre y varios horarios
 
     private String name;
+    private String tag;
+    private int codigo;
     private ArrayList<Horarios> horariosArrayList;
 
     public Materia(String name){
         this.setName(name);
+        this.codigo = Integer.parseInt(name.substring(name.indexOf('0'),name.length()));
+        this.setName(name.substring(0,name.indexOf('0')));
         horariosArrayList = new ArrayList<Horarios>();
     }
 
@@ -24,7 +28,7 @@ public class Materia {
         for (Horarios h: getHorariosArrayList()) {
             horarios =horarios + h.toString()+"\n";
         }
-        return "Materia:"+ getName() +"\n"+ horarios;
+        return "Materia:"+ getName() +" Codigo:"+ getCodigo() +"\n"+ horarios;
     }
 
     public String getName() {
@@ -41,5 +45,9 @@ public class Materia {
 
     public void setHorariosArrayList(ArrayList<Horarios> horariosArrayList) {
         this.horariosArrayList = horariosArrayList;
+    }
+
+    public int getCodigo() {
+        return codigo;
     }
 }
