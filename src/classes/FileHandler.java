@@ -1,5 +1,8 @@
 package classes;
 
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,43 +12,57 @@ import java.util.Date;
  */
 
 public class FileHandler {
+
+
     private String path = "http://www.unnoba.edu.ar/cursadas/archivo/";
-    public void downloadFile(String sede){
+    private String folder = "C:/pdfcursada/";
 
-        //return file;
-    }
 
-    // todo: No se si trabajar la fecha desde aca ¡?¡?¡?
-    /*public String getFecha(){
-        DateFormat completeDate = new SimpleDateFormat("ddMMyyyy");
-        Date date = new Date();
-
-        if(compareDates(currentDate,date)){
-            return completeDate.format(date);
-        } else {
-            return completeDate.format(currentDate);
-        }
-    }*/
-
-    public Boolean compareDates(Date current, Date newDate){
-        DateFormat day = new SimpleDateFormat("dd");
-        DateFormat month = new SimpleDateFormat("MM");
-        DateFormat year = new SimpleDateFormat("yyyy");
-
-        // todo: si newDate.month < currentDate.month ??? NO DEBERIA PASAR NUNCA, PEEEERO
-        if(Integer.valueOf(year.format(newDate)) > Integer.valueOf(year.format(current))) {
-            return true;
-        } else {
-            if(Integer.valueOf(month.format(newDate)) > Integer.valueOf(month.format(current))){
-                return true;
-            } else {
-                if(Integer.valueOf(day.format(newDate)) > Integer.valueOf(day.format(current))){
-                    return true;
+    public File downloadFile(String sede, String fecha,String namefile){
+        //Creamos la carpeta en C:/pdfcursadas/
+        createFolder();
+        File file = null;
+        InputStream in = null;
+        OutputStream out = null;
+        // Iniciamos la descarga del archivo
+        try{
+            URLConnection conn = new URL(path+sede+fecha+".pdf").openConnection();
+            conn.connect();
+            file = new File(folder + namefile+".pdf");
+            in = conn.getInputStream();
+            out = new FileOutputStream(file);
+            int b = 0;
+            while (b != -1) {
+                b = in.read();
+                if (b != -1)
+                    out.write(b);
+            }
+        }catch (Exception e){
+            System.out.println("Error al encontrar archivo");
+        }finally {
+            if(out != null && in != null) {
+                try {
+                    in.close();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
 
-        return false;
+        return file;
+    }
+    private void createFolder(){
+        try {
+            File dir = new File(folder);
+            if (!dir.exists()) {
+                if (!dir.mkdir()) {
+                    System.out.println("Error");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

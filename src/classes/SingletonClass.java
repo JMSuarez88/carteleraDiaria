@@ -12,9 +12,11 @@ public class SingletonClass {
 
 
 
+    private String localTime;
     private ArrayList<Cartelera> carteleraArrayList;
     private ArrayList<Carrera> carreraArrayList;
     private double versionData = 1.00;
+
     private static SingletonClass ourInstance = new SingletonClass();
 
     public static SingletonClass getInstance() {
@@ -45,5 +47,13 @@ public class SingletonClass {
 
     public void setCarreraArrayList(ArrayList<Carrera> carreraArrayList) {
         this.carreraArrayList = carreraArrayList;
+    }
+
+    public String getLocalTime() {
+        return localTime;
+    }
+
+    public void setLocalTime(String localTime) {
+        this.localTime = localTime;
     }
 }

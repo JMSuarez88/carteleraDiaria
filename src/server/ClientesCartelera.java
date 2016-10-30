@@ -31,7 +31,7 @@ public class ClientesCartelera extends Client implements Runnable {
         switch (packageData.getIDMESSAGE()){
             case 0:
                 this.sendMessage(new PackageData(0));
-
+                // Test case
                 break;
             case 1:
                 this.sendMessage(new PackageData(1, SingletonClass.getInstance().getCarreraArrayList(),SingletonClass.getInstance().getVersionData()));
@@ -44,6 +44,7 @@ public class ClientesCartelera extends Client implements Runnable {
                 }
                 break;
             case 3:
+
                 break;
             case 4:
                 break;

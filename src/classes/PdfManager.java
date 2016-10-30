@@ -67,31 +67,10 @@ public class PdfManager {
         return Text;
     }
 
-    public Map<String,String> gatherData(String sede, String fecha){
-        switch (sede){
-            case "sarmiento":
-                return getAnalizedData("evaperon",fecha);
-            case "rivadavia":
-                return getAnalizedData("anexo",fecha);
-            case "monteagudo":
-                return getAnalizedData("monteagudo",fecha);
-            case "ecana":
-                return getAnalizedData("ecana",fecha);
-            case "inta":
-                return getAnalizedData("inta",fecha);
-        }
-
-        return null;
+    public void setFile(File file){
+        this.file = file;
     }
-
-    private Map<String,String> getAnalizedData(String sede, String fecha){
-        // todo: de aca llamo a FileHandler()
-        URL url = this.getClass().getResource("/main/resources/"+sede+fecha+".pdf");
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+    public Map<String,String> getAnalizedData(String sede, String fecha){
 
         try{
             String file = stripDiacritics(this.toText().toLowerCase());

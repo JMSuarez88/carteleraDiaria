@@ -1,13 +1,18 @@
 package cartelera;
 
 import classes.PdfManager;
+import classes.SingletonClass;
+import org.apache.pdfbox.pdfparser.PDFParser;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by kaotiks on 08/08/16.
+ * Updates by Klincaja on 29/10/16
  */
 
 public class Cartelera {
@@ -15,19 +20,27 @@ public class Cartelera {
     // Variables
     private String nombreSede;
     private String ciudad;
+    private String institucion;
     private ArrayList<Aula> aulaArrayList;
     private PdfManager pdfManager = new PdfManager();
-    private Date fechaActual;
-    // todo: fechaAnterior = ultima fecha usada (db)
-    private Date fechaAnterior;
-
+    private PDFParser parser;
+    private boolean existCartelera;  // Existe Cartelera V - F
     // Constructor
-    public Cartelera(String name) {
-        setAulaArrayList(new ArrayList<Aula>());
-        this.nombreSede = name;
-        this.setNombreCiudad();
-        this.setAulasFromPdf();
-        this.fechaActual = new Date();
+    public Cartelera(String name,File file) {
+        try{
+            parser = new PDFParser(new FileInputStream(file));
+            parser.parse();
+            existCartelera = true;
+        }catch (Exception e){
+            existCartelera = false;
+        }
+        if(existCartelera) {
+            pdfManager.setFile(file);
+            setAulaArrayList(new ArrayList<Aula>());
+            this.nombreSede = name;
+            this.setNombreCiudad();
+            this.setAulasFromPdf();
+        }
     }
 
     // Getters
@@ -41,7 +54,7 @@ public class Cartelera {
     // Métodos
     // Asigna la ciudad segun el nombre de la sede
     public void setNombreCiudad(){
-        if(this.nombreSede.equals("Sarmiento") || this.nombreSede.equals("Rivadavia")){
+        if(this.nombreSede.equals("anexo") || this.nombreSede.equals("evaperon")){
             this.ciudad = "Junin";
         } else {
             this.ciudad = "Pergmino";
@@ -49,9 +62,12 @@ public class Cartelera {
     }
     // Recopila los datos de las carteleras en PDF y asigna cada aula con sus cursadas
     public void setAulasFromPdf(){
-        // todo: esto no esta guardando ningun valor, falta agregar el resto
+        aulaArrayList.clear();
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("ddMMyyyy");
+        String currentTime = sdf.format(dt);
 
-        for (Map.Entry<String, String> entry : this.pdfManager.gatherData(this.nombreSede,"29082016").entrySet())
+        for (Map.Entry<String, String> entry : this.pdfManager.getAnalizedData(this.institucion,currentTime).entrySet())
         {
             if(entry.getKey().length()>entry.getValue().length()){
                 continue;
@@ -78,40 +94,8 @@ public class Cartelera {
 
             }
         }
-        //Map<Integer, Map<String, String>> aux = this.pdfManager.gatherData(this.nombreSede,"27082016");
-        //this.setAulas(aux);
     }
 
-    public String getFecha(){
-        DateFormat completeDate = new SimpleDateFormat("ddMMyyyy");
-
-        if(compareDates(fechaAnterior,fechaActual)){
-            return completeDate.format(fechaActual);
-        } else {
-            return completeDate.format(fechaAnterior);
-        }
-    }
-
-    public Boolean compareDates(Date current, Date newDate){
-        DateFormat day = new SimpleDateFormat("dd");
-        DateFormat month = new SimpleDateFormat("MM");
-        DateFormat year = new SimpleDateFormat("yyyy");
-
-        // todo: si newDate.month < currentDate.month ??? NO DEBERIA PASAR NUNCA, PEEEERO
-        if(Integer.valueOf(year.format(newDate)) > Integer.valueOf(year.format(current))) {
-            return true;
-        } else {
-            if(Integer.valueOf(month.format(newDate)) > Integer.valueOf(month.format(current))){
-                return true;
-            } else {
-                if(Integer.valueOf(day.format(newDate)) > Integer.valueOf(day.format(current))){
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     public ArrayList<Aula> getAulaArrayList() {
         return aulaArrayList;
@@ -119,5 +103,15 @@ public class Cartelera {
 
     public void setAulaArrayList(ArrayList<Aula> aulaArrayList) {
         this.aulaArrayList = aulaArrayList;
+    }
+    @Override
+    public String toString(){
+        String aulas = "";
+        for (Aula aula:this.aulaArrayList) {
+            aulas = aulas+aula.toString();
+        }
+        return "Ciudad:"+this.ciudad+"\n"
+                +"Sede:"+this.nombreSede+"\n"
+                +"Aulas:"+aulas;
     }
 }

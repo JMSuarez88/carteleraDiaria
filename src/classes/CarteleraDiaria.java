@@ -2,14 +2,11 @@ package classes;
 
 
 
-import cartelera.*;
-import comisiones.Comisiones;
-import comisiones.Materia;
-import databaseConnection.ConnectionDB;
-import jdk.nashorn.api.scripting.JSObject;
-import server.ServerCartelera;
-
-import java.util.ArrayList;
+import cartelera.Cartelera;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -18,28 +15,54 @@ import java.util.ArrayList;
 
 public class CarteleraDiaria {
 
-    private static String[] sedes = {"Sarmiento","Rivadavia","Monteagudo","Ecana","Inta"};
+    // TODAS LAS SEDES POSIBLES----------------
+    private static String SARMIENTO = "evaperon";
+    private static String RIVADAVIA = "anexo";
+    private static String MONTEAGUDO = "monteagudo";
+    private static String ECANA = "ecana";
+    private static String INTA = "inta";
+    public static String [] INSTITUCIONES = {SARMIENTO,RIVADAVIA};
+    //-----------------------------------------
 
     public static void main(String [ ] args){
-        /*Cartelera sarmiento = new Cartelera("sarmiento");
-        SingletonClass.getInstance().getCarteleraArrayList().add(sarmiento);
+
+
+        Date dt = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+        SingletonClass.getInstance().setLocalTime(sdf.format(dt));
+
+        UpdateAutomatic updateAutomatic = new UpdateAutomatic(8);
+        updateAutomatic.startUpdateAutomatic();
+        System.out.println("QE HAGO ACA");
+        for (Cartelera cartelera:SingletonClass.getInstance().getCarteleraArrayList()) {
+            System.out.println("QE HAGO ACA2");
+
+            System.out.println(cartelera.toString());
+        }
+
+        // POLYMER - FIREBASE ANOTADOR CAMPUS PARTY
+
+        /*FileHandler fileHandler = new FileHandler();
+        PDFParser parser;
+        try{
+            parser = new PDFParser(new FileInputStream(fileHandler.downloadFile("anexo","28102016","anexo")));
+            parser.parse();
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
+        //Cartelera sarmiento = new Cartelera("sarmiento");
+        //SingletonClass.getInstance().getCarteleraArrayList().add(sarmiento);
+
         //Seteamos las carreras cargadas hardcore
-        SingletonClass.getInstance().getCarreraArrayList().add(CreadorCarreras.CrearANALISTAENSISTEMAS());
-        SingletonClass.getInstance().getCarreraArrayList().add(CreadorCarreras.CrearINGENIERIAENINFORMATICA());
-        SingletonClass.getInstance().getCarreraArrayList().add(CreadorCarreras.CrearLICINFORMATICO());
+        //SingletonClass.getInstance().getCarreraArrayList().add(CreadorCarreras.CrearANALISTAENSISTEMAS());
+        //SingletonClass.getInstance().getCarreraArrayList().add(CreadorCarreras.CrearINGENIERIAENINFORMATICA());
+        //SingletonClass.getInstance().getCarreraArrayList().add(CreadorCarreras.CrearLICINFORMATICO());
 
-        ServerCartelera sr = new ServerCartelera(4040);
-        java.util.Date dt = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(dt);*/
-        ArrayList<String> json = new ArrayList<String>();
-        json.add("Hola");
-        json.add("chau");
-        json.add("Temprano");
+        //ServerCartelera sr = new ServerCartelera(4040);
 
-        System.out.println(Transform.getToStringArray(json));
 
-        Transform.getArrayListToString(Transform.getToStringArray(json)).forEach(System.out::println);
+
+        // FORMATO OBTENER HORA O FECHA TO STRING
 
 
 
@@ -65,7 +88,4 @@ public class CarteleraDiaria {
             */
     }
 
-    public void updateResources(){
-
-    }
 }
